@@ -3,30 +3,38 @@ import mongoose from 'mongoose';
 const eventSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
+    required: [true, 'Event title is required'],
   },
-  description: String,
+  description: {
+    type: String,
+  },
   date: {
     type: Date,
-    required: true,
+    required: [true, 'Event date is required'],
   },
   time: {
     type: String,
-    required: true,
+    required: [true, 'Event time is required'],
   },
-  location: String,
+  location: {
+    type: String,
+    required: [true, 'Event location is required'],
+  },
   maxParticipants: {
     type: Number,
-    required: true,
+    required: [true, 'Maximum number of participants is required'],
+    min: [1, 'There must be at least one participant'],
   },
   confirmedParticipants: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   }],
   waitlist: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   }],
+}, {
+  timestamps: true, 
 });
 
 const Event = mongoose.model('Event', eventSchema);
